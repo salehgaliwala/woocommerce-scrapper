@@ -63,10 +63,11 @@ def scrape_product(url):
     if short_desc_tag:
         product_data["short_description"] = short_desc_tag.get_text(strip=True)
 
-    # Content / Long Description
+    # Content / Long Description (Preserve HTML)
     desc_tag = soup.select_one("#tab-description")
     if desc_tag:
-        product_data["description"] = desc_tag.get_text(separator="\n", strip=True)
+        # Using decode_contents to get inner HTML
+        product_data["description"] = desc_tag.decode_contents().strip()
 
     # Categories
     cat_tags = soup.select(".posted_in a")
